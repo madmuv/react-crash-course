@@ -1,25 +1,36 @@
-import logo from './logo.svg';
+import React, {useState} from 'react'
 import './App.css';
 
+import NavBar from './NavBar'
+import Input from './Input'
+import Post from './Post'
+
+let id = 1
+
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    const [posts, setPosts] = useState([])
+
+    function addPost(title) {
+        const newPost = {id, title}
+        setPosts([newPost, ...posts])
+        id += 1
+    }
+
+    function deletePost(id) {
+        const updatedPosts = posts.filter((post) =>
+            post.id !== id
+        )
+        setPosts(updatedPosts)
+    }
+
+    return (
+        <div className="App">
+            <NavBar/>
+            <Input addPost={addPost}/>
+            {posts.map((post) => (
+                <Post key={post.id} id={post.id} title={post.title} deletePost={deletePost}/>))}
+        </div>
+    );
 }
 
 export default App;
